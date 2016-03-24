@@ -16,9 +16,14 @@ module.exports = {
     .catch(function(err) { res.send(err); }); 
   },
   update: function(req, res, next){
-    var field = req.body.hasOwnProperty('comments')? 'comments':'points';
-    Record.findByIdAndUpdate(req.params.id, { $push: {field: req.body[field]} })
-    .then(function(result) { res.send('OK'); })
+    var query;
+    if (req.body.hasOwnProperty('comments'))
+      query = Record.findByIdAndUpdate(req.params.id, { $push: {"comments": req.body.comments} }, {new: true});
+    else if (req.body.hasOwnProperty('points'))
+      query = Record.findByIdAndUpdate(req.params.id, { $push: {"points": req.body.points} }, {new: true});
+    else throw new Error("Required field missing in request body");
+    query.exec()
+    .then(function(result) { res.send({comments: result.comments.length, points: result.points.length}); })
     .catch(function(err) { res.send(err); }); 
   }
 };

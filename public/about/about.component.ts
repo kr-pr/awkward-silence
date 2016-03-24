@@ -3,6 +3,6 @@ import {Component, View} from 'angular2/core';
   selector: 'about-component'
 })
 @View({
-  template: `<h1>Hello from a public route</h1>`
+  template: `<h4>README</h4>`
 })
 export class AboutComponent {}

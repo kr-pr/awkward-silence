@@ -6,7 +6,7 @@ var Schema = mongoose.Schema,
 
 var recordSchema = new Schema({
   note:      { type: String, required: true },
-  convo:     { type: Schema.Types.ObjectId, ref: 'convo' },
+  convo:     { type: Schema.Types.ObjectId, ref: 'convo', required: true },
   points:    [ recordPoint ],
   comments:  [ comment ]
 });

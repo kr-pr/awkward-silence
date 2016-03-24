@@ -20,6 +20,7 @@
     <script src="deps/rxjs/bundles/Rx.js"></script>
     <script src="deps/angular2/bundles/angular2.dev.js"></script>
     <script src="deps/angular2/bundles/router.dev.js"></script>
+    <script src="deps/d3/d3.js"></script>    
     <!-- 2. Configure SystemJS -->
     <script>
       System.config({
@@ -36,7 +37,8 @@
         map: {
           'angular2': 'deps/angular2',
           'rxjs': 'deps/rxjs',
-          'angular2-jwt': 'deps/angular2-jwt/angular2-jwt'
+          'angular2-jwt': 'deps/angular2-jwt/angular2-jwt',
+          'd3': 'deps/d3/d3'
         }
       });
       System.import('main')
