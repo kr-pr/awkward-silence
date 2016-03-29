@@ -9,7 +9,7 @@ import {AuthHttp, tokenNotExpired } from 'angular2-jwt';
 export class ApiService {
 
   private headers: Headers;
-  private baseUrl = "http://localhost:8777/api/";
+  private baseUrl = "http://192.168.1.182:8777/api/";
   constructor(public authHttp: AuthHttp) {
     this.headers = new Headers();
     this.headers.append('Content-Type', 'application/json');
@@ -25,6 +25,12 @@ export class ApiService {
 
     return this.authHttp.post(this.baseUrl + "convo", (obj), {headers: this.headers})
                     .map(res => <Convo> res.json())
+                    .catch(this.handleError);
+  }
+
+  removeConvo(id: string) {
+    return this.authHttp.delete(this.baseUrl + "convo/" + id)
+                    .map(res => res.status)
                     .catch(this.handleError);
   }
 
@@ -52,6 +58,13 @@ export class ApiService {
                     .map(res => <Status> res.json())
                     .catch(this.handleError);
   }
+
+  removeRecord(id: string) {
+    return this.authHttp.delete(this.baseUrl + "record/" + id)
+                    .map(res => res.status)
+                    .catch(this.handleError);
+  }
+
   private handleError (error: Response) {
     console.error(error);
     return Observable.throw(error.json().error || 'Server error');

@@ -15,6 +15,19 @@ module.exports = {
     .then(function(result) { res.send(this.record); })
     .catch(function(err) { res.send(err); }); 
   },
+  delete: function(req, res, next){
+    Record.findById(req.params.id)
+    .exec()
+    .then(function(record){
+      this.record = record;
+      return Convo.findByIdAndUpdate(record.convo, { $pull: {"records": record._id} }, {new: true});
+    })
+    .then(function(result){
+      return Record.remove({_id: this.record._id});
+    })  
+    .then(function(result) { res.status(204).send(result); })
+    .catch(function(err) { res.send(err); }); 
+  },
   update: function(req, res, next){
     var query;
     if (req.body.hasOwnProperty('comments'))

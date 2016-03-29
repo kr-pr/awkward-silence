@@ -19,6 +19,8 @@ app   //Add user if valid token content is not in db yet
   .use(cors())
   .use(express.static(path.join(__dirname, '../public')))
   .use('/deps', express.static(path.join(__dirname,'../node_modules'))) 
+  .delete('/api/convo/:id', jwtCheck, convoCtrl.delete)
+  .delete('/api/record/:id', jwtCheck, recordCtrl.delete)
   .post('/api/convo', jwtCheck, convoCtrl.create)
   .post('/api/record', jwtCheck, recordCtrl.create)
   .put('/api/record/:id', jwtCheck, recordCtrl.update)

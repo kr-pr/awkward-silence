@@ -5,6 +5,7 @@ mongoose.connect('mongodb://localhost/test');
 var userCtrl = require('./user'),
     Convo = require('../schemas/Convo'),
     User = require('../schemas/User'),
+    Record = require('../schemas/Record'),
     TimeLine = require('./timeline');
     
 module.exports = {
@@ -17,6 +18,23 @@ module.exports = {
       return User.findByIdAndUpdate(convo.user, { $push: {"convos": convo._id} }, {new: true});
     })  
     .then(function(result) { res.send(this.convo); })
+    .catch(function(err) { res.send(err); }); 
+  },
+  delete:  function(req, res, next){
+    Convo.findById(req.params.id)
+    .populate('records', '_id note')
+    .exec()
+    .then(function(convo){
+      this.convo = convo;
+      return User.findByIdAndUpdate(convo.user, { $pull: {"convos": convo._id} }, {new: true});
+    })
+    .then(function(result){
+      return Record.remove({convo: this.convo._id});
+    })
+    .then(function(result){
+      return Convo.remove({_id: this.convo._id});
+    })  
+    .then(function(result) { res.status(204).send(result); })
     .catch(function(err) { res.send(err); }); 
   },
   list: function(req, res, next){
@@ -44,6 +62,7 @@ module.exports = {
     .exec()
     .then(function(convo){
       var newTimeLine = TimeLine.update(convo);
+      console.log(newTimeLine);
       var query = Convo.findByIdAndUpdate(req.params.id, { $set: {"timeline": newTimeLine} }, {new: true});
       return query.exec();
     })

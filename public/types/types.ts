@@ -1,10 +1,16 @@
-export interface TimeVector {
+export interface TrackData {
   time: number;
-  value: number;
+  data: number[];
+}
+
+export interface TimeLinePoint {
+  time: number;
+  cluster: number;
+  records: number[];
+  props: number[];
 }
 
 export interface TimeString {
-  time: number;
   value: string;
 }
 
@@ -16,7 +22,7 @@ export interface Record {
 export interface Convo {
   _id: string;
   note: string;
-  timeline: TimeVector[];
+  timeline: TimeLinePoint[];
   records: Record[];
 }
 
@@ -28,6 +34,7 @@ export interface User {
 }
 
 export interface Status {
+  volume: number;
   comments: number;
   points: number;
 }

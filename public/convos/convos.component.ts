@@ -3,7 +3,6 @@ import { Router, CanActivate } from "angular2/router";
 import { User, Convo } from "../types/types";
 import { ApiService } from "../api/api.service";
 import { tokenNotExpired } from 'angular2-jwt';
-import { SessionService } from "../session/session.service";
 
 @Component({
   selector: "convo-list",
@@ -13,8 +12,9 @@ import { SessionService } from "../session/session.service";
         <div>
             <h4>
               {{convo.note}}
-              <button (click)="editConvo(convo._id)">Edit conversation</button>
               <button (click)="viewConvo(convo._id)">View conversation</button>
+              <button (click)="editConvo(convo._id)">Setup</button>
+              <button (click)="removeConvo(convo._id)">Remove</button>
             </h4>
         </div>
     </div>
@@ -22,8 +22,7 @@ import { SessionService } from "../session/session.service";
     <section *ngIf="showConvoForm">
       <input type="text" size=40 placeholder="Enter conversation note (required):" #note (keyup)="newNote=note.value" (blur)="note.value=''"/>
     </section>
-</div>`,
-  providers: [SessionService]
+</div>`
 })
 
 @CanActivate(() => tokenNotExpired())
@@ -36,19 +35,14 @@ export class ConvosComponent implements OnInit {
 
   constructor(
       private _router: Router,
-      private _convoService: ApiService,
-      private _sessionService: SessionService
+      private _convoService: ApiService
   ) {}
 
   ngOnInit() {
     this._convoService.getUserConvos().subscribe(
       user => {
-        this._sessionService.updateUser(user);
+        this.user = user;
       },
-      error =>  this.errorMessage = <any>error
-    );
-    this._sessionService.user$.subscribe(
-      user => this.user = user,
       error =>  this.errorMessage = <any>error
     );
   }
@@ -66,10 +60,18 @@ export class ConvosComponent implements OnInit {
       this._convoService.addConvo(JSON.stringify({user: this.user._id, note: note})).subscribe(
       convo => {
         this.user.convos.push(convo);
-        this._sessionService.updateUser(this.user);
       },
       error =>  this.errorMessage = <any>error
       );
     }
-  };
+  }
+
+  removeConvo(id: string) {
+    this._convoService.removeConvo(id).subscribe(
+      status => {
+        this.user.convos.forEach((item, index) => {if (item._id === id) this.user.convos.splice(index, 1); });
+      },
+      error =>  this.errorMessage = <any>error
+    );
+  }
 }
