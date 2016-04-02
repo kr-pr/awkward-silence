@@ -9,6 +9,11 @@ var timeArraySchema = new Schema({
     props: [Number]
 });
 
+var timeTextSchema = new Schema({
+    time: {type: Number, required: true},    
+    value: {type: String}
+});
+
 var numberSchema = new Schema({
     value: {type: Number, required: true}
 });
@@ -20,5 +25,6 @@ var textSchema = new Schema({
 module.exports = {
   clusterPoint: timeArraySchema,
   recordPoint:  numberSchema,
-  comment:      textSchema  
+  comment:      textSchema,
+  commentTime:  timeTextSchema
 };

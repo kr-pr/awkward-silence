@@ -125,6 +125,7 @@ export class RecordsComponent implements OnInit {
 
   stopRecording() {
     this.dataSub.unsubscribe();
+    this.childView.disable();
   }
 
   sendComment(id, comment) {

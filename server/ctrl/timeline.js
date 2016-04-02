@@ -90,7 +90,7 @@ var process = function(points){
   while (km.step()) {
       km.findClosestCentroids();
       km.moveCentroids();
-      console.log(km.centroids);
+      //console.log(km.centroids);
       if(km.hasConverged()) break;
   }
   //console.log('----------',km.clusters);
@@ -103,32 +103,47 @@ var process = function(points){
   
   var propArr = []; 
   for(var i = 0; i<km.clusters.length; i++){
-    propArr.push(movingProp(clusterNum, i, 20));
+    propArr.push(movingProp(clusterNum, i, 8));
   }
   
-  var propRows = reorderToRows(propArr).map(function(v){
+  var propRows = reorderToRows(propArr);/*.map(function(v){
     return v.reduce(function(p,c,ind){
       if (!ind) p.push(c);
       else p.push(c+p[ind-1]);
       return p;
     },[]);
-  }); 
+  }); */
   
   var out = cT.map(function(val, ind){
     return ({time:val, cluster:clusterNum[ind], records: rows[ind], props: propRows[ind] });
   });
   
-  return out;
+  return {t: t, data: out};
+};
+
+var merge = function(comments, t){
+  //console.log(comments, t);
+  var timeComments = timeFromId(comments)
+  .reduce(function(pr,cr){
+    return pr.concat(cr);
+  },[])
+  .sort(function(a,b){return a.time-b.time;})
+  .filter(function(val){return (val.time>t.min && val.time<t.max);});
+  return timeComments;
+  
 };
 
 module.exports = {
   update: function(convo){
-    var points = [];
+    var points = [], comments = [];
     convo.records
     .forEach(function(record){
       if (record._doc.hasOwnProperty('points') && record._doc.points.length)
         points.push(record._doc.points);
+      if (record._doc.hasOwnProperty('comments') && record._doc.comments.length)
+        comments.push(record._doc.comments);
     });
-    return process(points);
+    var result = process(points);
+    return {comments: merge(comments, result.t), points: result.data};
   }
 };

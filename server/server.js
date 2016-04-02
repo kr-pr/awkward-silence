@@ -2,17 +2,15 @@ var express = require('express'),
     bodyParser = require('body-parser'),
     cors = require('cors'),
     path = require('path'),
-    jwt = require('express-jwt');
+    jwt = require('express-jwt')
+    jwtSecret = require('./jwt-secret');
 
 var convoCtrl = require('./ctrl/convo'),
     recordCtrl = require('./ctrl/record');
 
 var app = express();
 
-var jwtCheck = jwt({
-  secret: new Buffer('awSVKblVWIFxmjexTdjg6Lo2F-DTadrWou2tVTV8ZvG6eSDyU3GtaIcmN3UhEn4Q', 'base64'),
-  audience: 'nacrIJP96MTF6yUTXredeH4fvui6AlFo'
-});
+var jwtCheck = jwt(jwtSecret);
 
 app   //Add user if valid token content is not in db yet
   .use(bodyParser.json())

@@ -20,6 +20,7 @@
     "body-parser": "^1.15.0",
     "cors": "^2.7.1",
     "d3": "^3.5.16",
+    "d3-interpolate": "^0.7.0",
     "es6-promise": "^3.0.2",
     "es6-shim": "^0.33.3",
     "everpolate": "0.0.3",

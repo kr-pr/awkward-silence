@@ -1,6 +1,16 @@
 export interface TrackData {
+  time: Date;
+  values: number[];
+}
+
+export interface CommentData {
+  time: Date;
+  value: string;
+}
+
+export interface RawCommentData {
   time: number;
-  data: number[];
+  value: string;
 }
 
 export interface TimeLinePoint {
@@ -24,6 +34,7 @@ export interface Convo {
   note: string;
   timeline: TimeLinePoint[];
   records: Record[];
+  comments: RawCommentData[];
 }
 
 export interface User {

@@ -1,8 +1,9 @@
 import {Component, View, ElementRef,  OnInit } from "angular2/core";
 import { Router, CanActivate , RouteParams} from "angular2/router";
 import * as d3 from 'd3';
-import { Convo, TrackData } from "../types/types";
-import { LineGraph } from "./line.graph";
+import { Convo, TrackData, CommentData } from "../types/types";
+import { LineGraphTrack } from "./line.graph";
+import { CommentTrack } from "./comment.track";
 import { ApiService } from "../api/api.service";
 import { tokenNotExpired } from 'angular2-jwt';
 
@@ -11,11 +12,12 @@ import { tokenNotExpired } from 'angular2-jwt';
 })
 
 @View({
-  directives: [ LineGraph ],
+  directives: [ LineGraphTrack, CommentTrack ],
   template: `
-  <h3 class="title">Conversation timeline</h3>
-  <line-graph [data]="leftTrack" [dims]="dims"></line-graph>
-  <line-graph [data]="rightTrack" [dims]="dims"></line-graph>
+  <h3 class="title">Conversation timeline: click to annotate</h3>
+  <line-graph-track [data]="leftTrack" [names]="lNames" [dims]="dims" [sub0]="true"></line-graph-track>
+  <comment-track [data]="centerComments" [dims]="{x: dims.x*0.75, y: dims.y}" [t]="t"></comment-track>
+  <line-graph-track [data]="rightTrack" [names]="rNames" [dims]="dims" [sub0]="false"></line-graph-track>
   `
 })
 
@@ -27,6 +29,10 @@ export class ViewComponent implements OnInit {
   dims: {x: number, y: number};
   leftTrack: TrackData[];
   rightTrack: TrackData[];
+  lNames: string[];
+  rNames: string[];
+  centerComments: CommentData[];
+  t: {min: Date, max: Date};
 
   constructor(
       private _router: Router,
@@ -39,12 +45,26 @@ export class ViewComponent implements OnInit {
     };
   }
 
+  tt(time: number) {
+    return new Date(time * 1000);
+  }
+
   ngOnInit() {
     this.id = this._routeParams.get('id');
     this._recordService.getView(this.id).subscribe(
       (convo: Convo) => {
-        this.leftTrack = convo.timeline.map(v => <TrackData>{time: v.time, data: v.records});
-        this.rightTrack = convo.timeline.map(v => <TrackData>{time: v.time, data: v.props});
+        this.t = {
+          min: this.tt(convo.timeline[0].time),
+          max: this.tt(convo.timeline[convo.timeline.length - 1].time)
+        };
+        this.leftTrack = convo.timeline
+          .map(v => <TrackData>{time: this.tt(v.time), values: v.records.slice(0, 2)});
+        this.lNames = convo.records.map(item => item.note);
+        this.centerComments = convo.comments
+          .map(v => <CommentData>{time: this.tt(v.time), value: v.value});
+        this.rightTrack = convo.timeline
+          .map(v => <TrackData>{time: this.tt(v.time), values: v.props});
+        this.rNames = convo.timeline[0].props.map((item, ind) => ind.toString());
       },
       error =>  this.errorMessage = <any>error
     );

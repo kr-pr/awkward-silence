@@ -3,3 +3,4 @@ public/**/*.js.map
 public/**/*.js
 .vscode/
 auth.json
+server/jwt-secret.js

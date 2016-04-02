@@ -62,8 +62,11 @@ module.exports = {
     .exec()
     .then(function(convo){
       var newTimeLine = TimeLine.update(convo);
-      console.log(newTimeLine);
-      var query = Convo.findByIdAndUpdate(req.params.id, { $set: {"timeline": newTimeLine} }, {new: true});
+      //console.log(newTimeLine);
+      var query = Convo.findByIdAndUpdate(req.params.id, {
+         $set: {"timeline": newTimeLine.points, "comments": newTimeLine.comments} 
+       }, {new: true})
+       .populate('records', '_id note');
       return query.exec();
     })
     .then(function(convo){ res.send(convo);})
