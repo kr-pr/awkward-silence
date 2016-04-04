@@ -15,11 +15,10 @@ import { tokenNotExpired } from 'angular2-jwt';
               <button class="button-small pure-button" (click)="editConvo(convo._id)">Setup</button>
               <button class="button-small pure-button" (click)="removeConvo(convo._id)">Remove</button>
             </h4>
-            <hr>
         </div>
     </div>
     <br>
-    <button class="button-large pure-button" (click)="addConvo(newNote); showConvoForm=!showConvoForm">Add new conversation</button>
+    <button class="button-large button-success pure-button" (click)="addConvo(newNote); showConvoForm=!showConvoForm">Add new</button>
     <br>
     <section id="convo-note-input" *ngIf="showConvoForm">
       <input type="text" size=15 placeholder="Enter conversation note (required):" #note (keyup)="newNote=note.value" (blur)="note.value=''"/>

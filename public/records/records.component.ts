@@ -10,15 +10,14 @@ import { RecordStatusView } from "./record.status.view";
 @Component({
   directives: [RecordStatusView],
   selector: "record-list",
-  template: `<h3>Records:</h3>
+  template: `<i>{{_convo?.note}} conversation record list</i>
 <div class="grid grid-pad">
     <div *ngFor="#record of _convo?.records">
         <div>
             <h4>
               <button class="pure-button" (click)="showNote=!showNote; recordId=record._id">{{record.note}} recording panel</button>
               <button class="pure-button" (click)="removeRecord(record._id)">Remove</button>
-            </h4>
-            <hr>       
+            </h4>       
         </div>
     </div>
     <div *ngIf="showNote">
@@ -28,15 +27,15 @@ import { RecordStatusView } from "./record.status.view";
       </div>
       <div id="record-control-button">
       <br>
-        <button class="pure-button button-large" *ngIf="!onAir" (click)="startRecording(recordId); onAir=!onAir">Start recording</button>
-        <button class="pure-button button-large" *ngIf="onAir" (click)="stopRecording(); onAir=!onAir" >Stop recording</button>
+        <button class="pure-button button-large button-error" *ngIf="!onAir" (click)="startRecording(recordId); onAir=!onAir">Start recording</button>
+        <button class="pure-button button-large button-success" *ngIf="onAir" (click)="stopRecording(); onAir=!onAir" >Stop recording</button>
       <br>
       </div>
       <div *ngIf="onAir">
         <status-view [status]="status"></status-view>
       </div> 
     </div>
-    <button class="pure-button button-large" *ngIf="!showNote" (click)="addRecord(newNote); newNote=''; showRecordForm=!showRecordForm">Add new recording</button>
+    <button class="pure-button button-large button-success" *ngIf="!showNote" (click)="addRecord(newNote); newNote=''; showRecordForm=!showRecordForm">Add new record</button>
     <section id="record-note-input" *ngIf="showRecordForm && !showNote">
       <input type="text" size=15 placeholder="Enter record note (required):" #note (keyup)="newNote=note.value"/>
     </section>

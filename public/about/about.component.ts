@@ -5,7 +5,7 @@ import {Component, View} from 'angular2/core';
 @View({
   template: `
   <div id="about-header">
-    This service provides an concise description of conversation flow in visual form.
+    <i>This service provides an concise description of conversation flow in visual form.</i>
   </div>
   <br>
   <div id="about-content">

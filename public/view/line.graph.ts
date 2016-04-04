@@ -36,7 +36,8 @@ export class LineGraphTrack implements OnInit, OnChanges {
 
     this.xAxis = d3.svg.axis()
         .scale(this.x)
-        .tickFormat(d3.time.format("%X"));
+        .tickFormat(d3.time.format("%X"))
+        .ticks(3);
 
     this.yAxis = d3.svg.axis()
         .scale(this.y)

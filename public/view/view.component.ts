@@ -15,7 +15,7 @@ import { tokenNotExpired } from 'angular2-jwt';
   directives: [ LineGraphTrack, CommentTrack ],
   template: `
   <div>
-    <i class="title">Click on colored area to annotate conversation timeline</i>
+    <i class="title">Click on colored area to annotate timeline</i>
   </div>
   <line-graph-track [data]="leftTrack" [names]="lNames" [dims]="dims" [sub0]="true"></line-graph-track>
   <comment-track [data]="centerComments" [dims]="{x: dims.x*0.75, y: dims.y}" [t]="t"></comment-track>
