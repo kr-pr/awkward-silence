@@ -1,0 +1,47 @@
+div {
+  text-align: center;
+}
+
+.button-small {
+  font-size: 85%;
+}
+
+.button-large {
+  font-size: 120%;
+}
+
+#top-menu-bar {
+  text-align: center;
+}
+
+#front-pic-container img {
+  max-width:100%
+}
+#about-content {
+  text-align: left;
+  font-size: small;
+}
+
+#convo-note-input {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+#convo-note-input input {
+  margin: 0;
+  font-size: 120%;
+}
+
+#record-note-input {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center; 
+}
+
+#record-note-input input {
+  margin: 0;
+  font-size: 120%;
+}

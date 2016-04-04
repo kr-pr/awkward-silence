@@ -9,9 +9,7 @@ import { BarGraph } from "./bar.graph";
   directives: [ BarGraph ],
   template: `
   <div class="record-status">
-        Volume: {{status?.volume}}dB<br>
-        {{status?.comments}} comments<br>
-        {{status?.points}} seconds
+        Volume: {{status?.volume}}dB / {{status?.comments}} comments / {{status?.points}} seconds
   </div>
   <div class="record-status-bar-graph">
     <bar-graph [data]="bars" [dims]="dims"></bar-graph>
@@ -27,8 +25,8 @@ export class RecordStatusView{
 
   constructor(private ref: ChangeDetectorRef) {
     this.dims = {
-      x: Math.round(window.innerWidth * 0.8),
-      y: Math.round(window.innerHeight * 0.3)
+      x: Math.round(window.innerWidth * 0.9),
+      y: Math.round(window.innerHeight * 0.25)
     };
     this.bars = Array.from({ length: 20 }, (v, k) => ({i: k, vol: -100}));
 

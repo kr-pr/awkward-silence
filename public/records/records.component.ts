@@ -15,28 +15,30 @@ import { RecordStatusView } from "./record.status.view";
     <div *ngFor="#record of _convo?.records">
         <div>
             <h4>
-              {{record.note}}
-              <button (click)="showNote=!showNote; recordId=record._id">Show recording panel</button>
-              <button (click)="removeRecord(record._id)">Remove</button>
-            </h4>       
+              <button class="pure-button" (click)="showNote=!showNote; recordId=record._id">{{record.note}} recording panel</button>
+              <button class="pure-button" (click)="removeRecord(record._id)">Remove</button>
+            </h4>
+            <hr>       
         </div>
     </div>
     <div *ngIf="showNote">
       <div>
-      <input type="text" size=20 placeholder="Enter comment:" #comment (keyup)="0"/>
-      <button (click)="sendComment(recordId, comment.value); comment.value=''">Send comment</button>
+      <input type="text" size=15 placeholder="Enter comment:" #comment (keyup)="0"/>
+      <button class="pure-button button-small" (click)="sendComment(recordId, comment.value); comment.value=''">Send comment</button>
       </div>
-      <div>
-        <button *ngIf="!onAir" (click)="startRecording(recordId); onAir=!onAir">Start recording</button>
-        <button *ngIf="onAir" (click)="stopRecording(); onAir=!onAir" >Stop recording</button>
+      <div id="record-control-button">
+      <br>
+        <button class="pure-button button-large" *ngIf="!onAir" (click)="startRecording(recordId); onAir=!onAir">Start recording</button>
+        <button class="pure-button button-large" *ngIf="onAir" (click)="stopRecording(); onAir=!onAir" >Stop recording</button>
+      <br>
       </div>
       <div *ngIf="onAir">
         <status-view [status]="status"></status-view>
       </div> 
     </div>
-    <button *ngIf="!showNote" (click)="addRecord(newNote); newNote=''; showRecordForm=!showRecordForm">Add new recording</button>
-    <section *ngIf="showRecordForm && !showNote">
-      <input type="text" size=40 placeholder="Enter record note (required):" #note (keyup)="newNote=note.value"/>
+    <button class="pure-button button-large" *ngIf="!showNote" (click)="addRecord(newNote); newNote=''; showRecordForm=!showRecordForm">Add new recording</button>
+    <section id="record-note-input" *ngIf="showRecordForm && !showNote">
+      <input type="text" size=15 placeholder="Enter record note (required):" #note (keyup)="newNote=note.value"/>
     </section>
 </div>`,
   providers: [StatusService, AudioService]

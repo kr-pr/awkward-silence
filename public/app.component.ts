@@ -2,6 +2,7 @@ import { Component }       from "angular2/core";
 import { RouteConfig, ROUTER_DIRECTIVES } from "angular2/router";
 import { ApiService }     from "./api/api.service";
 import { AboutComponent } from "./about/about.component";
+import { LandingComponent } from "./about/landing";
 import { ConvosComponent } from "./convos/convos.component";
 import { RecordsComponent } from "./records/records.component";
 import { ViewComponent } from "./view/view.component";
@@ -13,29 +14,32 @@ declare var Auth0Lock;
   directives: [ ROUTER_DIRECTIVES ],
   selector: 'app',
   template: `
-    <h1>{{title}}</h1>      
-    <button [routerLink]="['About']">About</button>
-    <button *ngIf="!loggedIn()" (click)="login()">Login</button>
-    <button *ngIf="loggedIn()" [routerLink]="['Convos']">Conversations</button>
-    <button *ngIf="loggedIn()" (click)="logout()">Logout</button>
-    <hr>
+    <section id="top-menu-bar">
+      <br>
+      <button class="pure-button button-small" [routerLink]="['About']">About</button>
+      <button class="pure-button button-small" *ngIf="!loggedIn()" (click)="login()">Login</button>
+      <button class="pure-button button-small" *ngIf="loggedIn()" [routerLink]="['Convos']">Conversations</button>
+      <button class="pure-button button-small" *ngIf="loggedIn()" (click)="logout()">Logout</button>
+    </section>
+    <br>
     <div>
-      <router-outlet></router-outlet>
+      <router-outlet>
+      </router-outlet>
     </div>`,
   providers: [ApiService]
 })
 
 @RouteConfig([
-  {    path: "/about",      name: "About",     component: AboutComponent     },
-  {    path: "/convos",     name: "Convos",    component: ConvosComponent    },
-  {    path: "/records/:id",    name: "Records",   component: RecordsComponent   },
-  {    path: "/convo/:id",    name: "Views",   component: ViewComponent   }
+  {    path: "/",             name: "Land",     component: LandingComponent,  useAsDefault: true },
+  {    path: "/about",        name: "About",    component: AboutComponent     },
+  {    path: "/convos",       name: "Convos",   component: ConvosComponent    },
+  {    path: "/records/:id",  name: "Records",  component: RecordsComponent   },
+  {    path: "/convo/:id",    name: "Views",    component: ViewComponent      }
 ])
 
 
 export class AuthAppComponent {
 
-  title = "Awkward Silence";
   lock = new Auth0Lock('nacrIJP96MTF6yUTXredeH4fvui6AlFo', 'kprostyakov.auth0.com');
   constructor(public authHttp:AuthHttp) {}
 

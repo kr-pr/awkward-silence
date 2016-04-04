@@ -6,21 +6,23 @@ import { tokenNotExpired } from 'angular2-jwt';
 
 @Component({
   selector: "convo-list",
-  template: `<h3>Conversations:</h3>
+  template: `
 <div class="grid grid-pad">
     <div *ngFor="#convo of user?.convos">
         <div>
             <h4>
-              {{convo.note}}
-              <button (click)="viewConvo(convo._id)">View conversation</button>
-              <button (click)="editConvo(convo._id)">Setup</button>
-              <button (click)="removeConvo(convo._id)">Remove</button>
+              <button class="button-small pure-button" (click)="viewConvo(convo._id)">View {{convo.note}} conversation</button>
+              <button class="button-small pure-button" (click)="editConvo(convo._id)">Setup</button>
+              <button class="button-small pure-button" (click)="removeConvo(convo._id)">Remove</button>
             </h4>
+            <hr>
         </div>
     </div>
-    <button (click)="addConvo(newNote); showConvoForm=!showConvoForm">Add new conversation</button>
-    <section *ngIf="showConvoForm">
-      <input type="text" size=40 placeholder="Enter conversation note (required):" #note (keyup)="newNote=note.value" (blur)="note.value=''"/>
+    <br>
+    <button class="button-large pure-button" (click)="addConvo(newNote); showConvoForm=!showConvoForm">Add new conversation</button>
+    <br>
+    <section id="convo-note-input" *ngIf="showConvoForm">
+      <input type="text" size=15 placeholder="Enter conversation note (required):" #note (keyup)="newNote=note.value" (blur)="note.value=''"/>
     </section>
 </div>`
 })

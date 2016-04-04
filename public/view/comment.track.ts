@@ -37,11 +37,12 @@ export class CommentTrack implements OnInit, OnChanges {
     this.y.domain(d3.extent([this.t.min, this.t.max]));
 
     let textLabels = text
-      .attr("x", (d => this.dims.x/3 ))
+      .attr("x", (d => 5 ))
       .attr("y", (d => this.y(d.time)))
       .text( d => d.value )
       .attr("font-family", "sans-serif")
-      .attr("font-size", "20px")
+      .attr("font-size", "15px")
+      .attr("text-align", "left")
       .attr("fill", "black");
   }
 
